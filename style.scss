@@ -1,5 +1,5 @@
 $color1: #17202A;
-$text-color1: #fff;
+$text_color1: #fff;
 $accent_color: #4BA0EC;
 
 @function pxToEm($px, $from: 16) {
@@ -8,13 +8,13 @@ $accent_color: #4BA0EC;
 
 body {
     background: $color1;
-    color: $text-color1;
+    color: $text_color1;
     font-family: 'Helvetica Neue';
 }
 
 .wrapper {
     display: grid;
-    grid-template-columns: 244px 599px 377px;
+    grid-template-columns: pxToEm(280) pxToEm(599) pxToEm(377);
     margin: auto;
     width: fit-content;
 }
@@ -24,21 +24,26 @@ body {
     margin-left: 18px;
 }
 
-.sidemenu-nav {
+.left-sidemenu {
+    background: $color1;
+}
+
+.left-sidemenu__nav {
     display: flex;
     flex-direction: column;
 
     a {
-        align-items: center;
         display: flex;
+        align-items: center;
         color: inherit;
         font-size: 22px;
         font-weight: 700;
         padding: 18px;
+        height: 21px;
         text-decoration: none;
 
         &:hover {
-            background: rgba($accent_color, 0.4);
+            background: rgba($accent_color, .4);
         }
     }
 
@@ -63,39 +68,123 @@ body {
     height: pxToEm(50, 15);
 }
 
-@media only screen and (max-width:900px) {
-    .wrapper{
+.toggler {
+    display: none;
+}
+
+.profile-name {
+    font-size: 20px;
+}
+
+.search-box {
+    font-size: 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    $icon_space: 17;
+    $icon_width: 14.5;
+
+    &__field {
+        $field_bg: #283340;
+        background: $field_bg;
+        border: 0;
+        border-radius: pxToEm(100);
+        box-sizing: border-box;
+        color: $text_color1;
+        font-size: inherit;
+        padding-left: pxToEm($icon_space * 2 + $icon_width);
+        padding-right: pxToEm($icon_space);
+        height: pxToEm(40);
+        width: pxToEm(346);
+
+        &::placeholder {
+            color: #8A98A4;
+        }
+
+        &:focus {
+            outline: none;
+
+            &+svg {
+                stroke: $text_color1;
+            }
+        }
+
+        &:not([value=""]) {
+            background: lighten($field_bg, 7%);
+
+            &+svg {
+                stroke: darken($text_color1, 20%);
+            }
+        }
+    }
+
+    &__icon {
+        stroke: #8A98A4;
+        position: absolute;
+        left: pxToEm($icon_space);
+    }
+
+}
+
+@media only screen and (max-width: 900px) {
+    .wrapper {
         font-size: 14px;
     }
-    
+
     .tweet {
         font-size: 12px;
     }
 }
 
-@media only screen and (max-width:700px) {
+@media only screen and (max-width: 700px) {
+    .toggler {
+        display: flex;
+        justify-content: center;
+
+        width: 45px;
+        height: 45px;
+        margin-left: pxToEm(7);
+
+        svg {
+            fill: $text_color1;
+            width: 12px;
+        }
+    }
+
     .wrapper {
         grid-template-columns: 60px 1fr;
         width: 100%;
+
+        &--open {
+            grid-template-columns: 1fr;
+            padding-left: 60px;
+        }
     }
 
     .right-column {
         display: none;
     }
 
-    .sidemenu-nav {
-        .text {
-            display: none;
+    .left-sidemenu {
+        &__nav {
+            .text {
+                display: none;
+            }
+        }
+
+        &--open {
+            position: absolute;
+            left: 8px;
+            width: pxToEm(280);
+
+            .text {
+                display: initial;
+            }
         }
     }
 
     .tweet {
-        width: 50px;
-        font-size: 12px;
-
+        width: 45px;
+        height: 45px;
     }
-}
-
-.profile-name {
-    font-size:20 px;
 }
